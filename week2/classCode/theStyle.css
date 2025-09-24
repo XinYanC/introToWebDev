@@ -1,0 +1,33 @@
+h1 {
+    color: #FF4500
+}
+
+body {
+    background: #000080;
+}
+
+p {
+    border: solid 10px;
+    color:white;
+}
+
+button {
+    background-color: pink;
+    padding: 40px;
+    border-radius: 100%;
+}
+
+button:hover {
+    background-color: antiquewhite;
+}
+
+#special { /* for id */
+    color:rgb(255,180,180);
+    height: 5vw;
+}
+
+.grouped { /* for classes */
+    background-color: blanchedalmond;
+    color: black;
+    margin: 50px;
+}
