@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Fascinate&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nabla&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Honk&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monofett&display=swap');
+
+body {
+    padding: 20px;
+}
+
+nav {
+    display:flex;
+    flex-direction:row; 
+    justify-content:space-between;
+    font-family: "Nabla", system-ui;
+    font-variation-settings:
+    "EDPT" 100,
+    "EHLT" 12;
+    font-size: 30px;
+}
+
+nav div:hover {
+    font-size: 40px;
+}
+
+#laptop {
+    padding: 5% 18% 5% 18%;
+}
+
+#phone {
+    padding: 4% 39% 4% 39%;
+}
+
+#phone nav div {
+    font-size: 25px;
+}
+
+#phone nav div:hover {
+    font-size: 30px;
+}
+
+.material-symbols-outlined {
+    font-size: 40px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.body {
+    font-family: "Fascinate", system-ui;
+}
+
+.body h1 {
+    font-size: 100px;
+    padding: 7% 10% 0% 10%;
+    text-align: center;
+}
+
+.body .button_body {
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-evenly;
+    padding: 2% 20% 10% 20%;
+}
+
+.button_body a button {
+    font-family: "Honk", system-ui;
+    font-variation-settings:
+    "MORF" 15,
+    "SHLN" 50;
+    font-size: 25px;
+    padding: 20px 40px 20px 40px;
+    border-radius: 50px;
+    border: none;
+    background-color:bisque;
+}
+
+.button_body a button:hover {
+    font-family: "Honk", system-ui;
+    font-variation-settings:
+    "MORF" 15,
+    "SHLN" 50;
+    font-size: 40px;
+    padding: 20px 40px 20px 40px;
+    border-radius: 50px;
+    background-color:burlywood;
+}
+
+#laptop_img {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    z-index: -1;
+}
+
+#phone_img {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 108%;
+    z-index: -1;
+}
+
+h2 {
+    font-family: "Monofett", monospace;
+    text-align: center;
+}
