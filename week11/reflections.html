@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Final project series</title>
+    <link rel="stylesheet" href="slideTemplate.css" />
+    <link rel="stylesheet" href="slides.css" />
+  </head>
+  <body>
+    <div class="slide" id="slide2">
+      <h1>my projects series.</h1>
+      <div class="media-scroller snaps-inline">
+        <div class="media-element">
+          <iframe src="../week1/index.html" title="Week 1 preview"></iframe>
+          <p class="title">Week 1</p>
+          <p class="description">
+            First website of the class! Had a lot of fun learning the basics and
+            imaging the "box."
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_u51UzjFs-5dHjzLlZJEeujpy3dMGVCWRZg&s"
+            />
+          </p>
+        </div>
+
+        <div class="media-element">
+          <iframe src="../week2/index.html" title="Week 2 preview"></iframe>
+          <p class="title">Week 2</p>
+          <p class="description">
+            Started experimenting more with CSS. Learned how to use Google fonts
+            and reactivity (e.g. used :hover). Also found the embed
+            <code>iframe</code>
+            tag. However, I also learned that unfortunately, you cannot embed
+            all websites :( <br /><br />
+            <code
+              >&lt;iframe src="url" title="description"&gt;&lt;/iframe&gt;</code
+            >
+          </p>
+        </div>
+
+        <div class="media-element">
+          <iframe src="../week3/index.html" title="Week 3 preview"></iframe>
+          <p class="title">Week 3</p>
+          <p class="description">
+            Experimented more with typography and layout. Took some time to
+            figure out how to fit <code>div</code>s inside a constrainted area
+            (laptop and phone) as well as making the content overflow properly
+            for scrollage. However, I still needed to practice more with
+            adjusting to different screen sizes.
+          </p>
+        </div>
+
+        <div class="media-element">
+          <iframe
+            src="../week3/classCode/index.html"
+            title="DADA (Paul Rand) preview"
+          ></iframe>
+          <p class="title">DADA</p>
+          <p class="description">
+            I remember doing this assignment and I was trying to move the layout
+            but no matter what I did, the format did not look as I indended.
+            After looking at it for over 30 minutes, I realized I just called it
+            wrong in the CSS file. I was trying to move a class and I
+            accidentially called it as an id (<code>#</code>) in the CSS 🤦‍♀️.
+            Besides that, the assignment was very fun. I also had a lot of fun
+            playing the froggy game to learn flexbox and grid!<br />
+            <code># != .</code>
+          </p>
+        </div>
+
+        <div class="media-element">
+          <iframe src="../week5/index.html" title="Week 5 preview"></iframe>
+          <p class="title">Week 5</p>
+          <p class="description">
+            Learned more about reactivity. Played around with transitions,
+            animations, and different customed cursors.<br /><br />
+            <code>cursor: value;</code>
+          </p>
+        </div>
+
+        <div class="media-element">
+          <iframe src="../week6/index.html" title="Week 6 preview"></iframe>
+          <p class="title">Week 6</p>
+          <p class="description">
+            Started JS! Expanded from the class example into button grids.<br /><br />
+            <code>
+              picButtons.forEach(btn =&gt; {<br />
+              &nbsp;&nbsp;btn.addEventListener('click', () =&gt; {<br />});<br />
+              }); </code
+            ><br /><br />
+            <img
+              src="https://media1.tenor.com/m/wW2HwZr1x_sAAAAd/childish-gambino-this-is-america.gif"
+            />
+          </p>
+        </div>
+
+        <div class="media-element">
+          <iframe
+            src="https://xinyanc.github.io/DeathImitatesLanguage/index.html"
+            title="Week 8 preview"
+          ></iframe>
+          <p class="title">Week 8</p>
+          <p class="description">
+            Enjoyed collaborating with my groupmates for this project. Learned
+            how to use <code>scroll-behavior</code> and
+            <code>scroll-snap-type</code> to create a smooth scrolling
+            single-page website. Looking forward to using this more for future
+            websites! <br /><br />
+            <code
+              >scroll-behavior: smooth;<br />
+              scroll-snap-type: y mandatory;</code
+            >
+          </p>
+        </div>
+
+        <div class="media-element">
+          <iframe src="../week9/index.html" title="Week 9 preview"></iframe>
+          <p class="title">Week 9</p>
+          <p class="description">
+            Created a website based on the documentary "The Social Dilemma."
+            Really like that we watched the documentary and changed my
+            perspective on "being on my phone." Learned how to add more HTML
+            components using JS.
+            <br /><br />
+            <code>inbox.append(email);</code>
+          </p>
+        </div>
+
+        <div class="media-element">
+          <iframe src="../week10/index.html" title="Week 10 preview"></iframe>
+          <p class="title">Week 10</p>
+          <p class="description">
+            Another interesting and eye-opening documentary. This time, I tried
+            to mimic a generational "reaction," continuing the idea from week 9.
+            I struggled a bit with adding this "time" component since the
+            comments popped up at different times instead of instantly like week
+            9's website. <br />
+            <br />
+            <code>setTimeout(() => addComment(commentSect, comment));</code>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <a href="index.html">
+      <button class="slideBtn leftBtn" aria-label="Previous">
+        <span class="arrow">&lt;</span>
+      </button>
+    </a>
+
+    <a href="plans.html">
+      <button class="slideBtn rightBtn" aria-label="Next">
+        <span class="arrow">&gt;</span>
+      </button>
+    </a>
+  </body>
+</html>

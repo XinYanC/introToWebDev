@@ -1,0 +1,154 @@
+#slide1 h3 {
+  margin: 0 0 .25rem 0;
+  font-weight: 500;
+}
+
+#slide1 h1 {
+  margin: 0;
+  font-size: 2.25rem;
+  font-weight: 900;
+}
+
+#slide2 h1 {
+  margin: 0;
+  font-size: 2.25rem;
+  margin-bottom: 2rem;
+}
+
+code{
+    color:darkgreen;
+}
+
+.slide .media-scroller {
+  display: inline-grid;
+  margin-inline: auto;
+  max-width: 90%;
+  overflow-y: auto;
+}
+
+/* to make a scrollable horizontal shelve: https://www.youtube.com/watch?v=3yfswsnD2sw */
+.media-scroller {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: column;
+  grid-auto-columns: 30%;
+
+  padding: 0 1rem 1rem;
+
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.media-scroller--with-groups {
+  grid-auto-columns: 80%;
+}
+
+.media-group {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: column;
+}
+
+.media-element {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  border: 1px solid #000;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+  height: 30rem;
+}
+
+.media-element > img,
+.media-element > iframe {
+  inline-size: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border: 1px solid #000;
+  display: block;
+}
+
+.media-element > .description,
+.media-element > p.description {
+  margin: 0;
+  overflow-y: auto;
+  height: 30rem;
+}
+
+.snaps-inline {
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: 1rem;
+}
+
+.snaps-inline > * {
+  scroll-snap-align: start;
+}
+.media-element .title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+.media-element .description {
+  margin: 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.media-element > p.description {
+  max-height: 40%;
+  overflow-y: auto;
+}
+
+#slide3 .twoCol {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    max-width: 1100px;
+    width: 100%;
+    margin-inline: auto;
+}
+
+#slide3 .left {
+    flex: 1;
+    text-align: left;
+}
+
+#slide3 .right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#slide3 .right img {
+    max-width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+#slide3 h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+}
+#slide3 .section {
+    margin-bottom: 1.5rem;
+}
+#slide3 .placeholder {
+    color: #444;
+}
+
+@media (max-width: 800px) {
+    #slide3 .twoCol {
+        flex-direction: column;
+    }
+    #slide3 .right img {
+        max-height: 40vh;
+    }
+}
