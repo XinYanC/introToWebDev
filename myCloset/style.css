@@ -1,0 +1,240 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #f1ebe4;
+  overflow: hidden;
+}
+
+.closet {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  perspective: 1000px;
+  position: relative;
+}
+
+.door {
+  width: 50vw;
+  height: 100vh;
+  position: relative;
+  margin: 0;
+  box-sizing: border-box;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.7s ease;
+  transform-origin: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.door-left {
+  border-right: solid 5px #525252;
+  transform: translateX(0);
+}
+
+.door-left img {
+  transform: scaleX(-1);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.door-right {
+  transform: translateX(0);
+  box-shadow: 
+    -25px 0 25px rgba(0, 0, 0, 0.5);
+}
+
+.door-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.doors-open .door-left {
+  transform: translateX(-45vw);
+  box-shadow: 
+    20px 0 20px rgba(66, 66, 66, 0.5);
+}
+
+.doors-open .door-right {
+  border-left: solid 5px #525252;
+  transform: translateX(45vw);
+  box-shadow: 
+    -20px 0 20px rgba(66, 66, 66, 0.5);
+}
+
+/* Shelves - Hidden by default, visible when doors open */
+.shelves {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+  z-index: 500;
+  padding: 0 8vw;
+  gap: 0;
+  box-sizing: border-box;
+}
+
+.doors-open .shelves {
+  opacity: 1;
+  visibility: visible;
+}
+
+.shelf {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+.shelf-nav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  position: relative;
+  padding: 1rem 2rem;
+}
+
+.nav-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #525252;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  z-index: 600;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.left-btn {
+  margin-right: 1rem;
+}
+
+.right-btn {
+  margin-left: 1rem;
+}
+
+.nav-btn:hover {
+  background: rgba(82, 82, 82, 0.95);
+  color: white;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
+.shelf h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Horizontal Scrolling Media Scroller */
+.media-scroller {
+  display: grid;
+  gap: 1rem;
+  grid-auto-flow: column;
+  grid-auto-columns: 18%;
+  padding: 0 1rem 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  width: 100%;
+  flex: 1;
+  scroll-behavior: smooth;
+}
+
+.snaps-inline {
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: calc(50% - 9%);
+}
+
+.snaps-inline > * {
+  scroll-snap-align: center;
+  scroll-snap-stop: normal;
+}
+
+.clothing-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  transition: transform 0.3s ease;
+  min-width: 150px;
+}
+
+.clothing-item:hover {
+  transform: scale(1.1);
+}
+
+.clothing-item img {
+  width: 100%;
+  height: 185px;
+  object-fit: contain;
+}
+
+/* Scrollbar styling */
+.media-scroller::-webkit-scrollbar {
+  height: 6px;
+}
+
+.media-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.media-scroller::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 3px;
+}
+
+.media-scroller::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+@media (max-width: 1200px) {
+  .media-scroller {
+    grid-auto-columns: 25%;
+  }
+}
+
+@media (max-width: 768px) {
+  .media-scroller {
+    grid-auto-columns: 35%;
+  }
+  
+  .shelf h2 {
+    font-size: 1.25rem;
+  }
+}
