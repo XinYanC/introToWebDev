@@ -41,13 +41,17 @@ const clothingData = {
   ],
 };
 
-// Track current index for each category
+// Track current center index for each category
 const categoryIndices = {};
 
 // Function to create a clothing item element
-function createClothingItem(category, item) {
+function createClothingItem(category, item, isCenter = false) {
   const clothingItem = document.createElement("div");
   clothingItem.className = "clothing-item";
+
+  if (isCenter) {
+    clothingItem.classList.add("is-center");
+  }
 
   const img = document.createElement("img");
   img.src = `/myCloset/assets/${category}/${item.file}`;
@@ -57,18 +61,32 @@ function createClothingItem(category, item) {
   return clothingItem;
 }
 
-// Function to get next items in a circular fashion
-function getNextItems(category, count) {
+// Render a fixed window of items centered on the current index
+function renderWindow(category, scroller, direction = "none") {
   const items = clothingData[category];
-  const result = [];
-  
-  for (let i = 0; i < count; i++) {
-    const index = categoryIndices[category] % items.length;
-    result.push(items[index]);
-    categoryIndices[category]++;
+  const total = items.length;
+  const centerIndex = categoryIndices[category];
+  const windowSize = 5; // keep odd so there is a center
+  const half = Math.floor(windowSize / 2);
+
+  scroller.innerHTML = "";
+
+  for (let offset = -half; offset <= half; offset++) {
+    const itemIndex = (centerIndex + offset + total) % total;
+    const item = items[itemIndex];
+    const isCenter = offset === 0;
+    const clothingItem = createClothingItem(category, item, isCenter);
+    scroller.appendChild(clothingItem);
   }
-  
-  return result;
+
+  // Trigger slide animation based on direction
+  if (direction !== "none") {
+    const animClass = direction === "forward" ? "slide-left" : "slide-right";
+    scroller.classList.remove("slide-left", "slide-right");
+    // force reflow to restart animation
+    void scroller.offsetWidth;
+    scroller.classList.add(animClass);
+  }
 }
 
 // Function to create shelves dynamically
@@ -96,6 +114,10 @@ function createShelves() {
     const scroller = document.createElement("div");
     scroller.className = "media-scroller snaps-inline";
     scroller.dataset.category = category;
+    
+    // Set z-index based on category
+    const zIndexMap = { tops: 30, bottoms: 20, shoes: 10 };
+    scroller.style.zIndex = zIndexMap[category] || 10;
 
     // Right arrow button
     const rightBtn = document.createElement("button");
@@ -103,12 +125,8 @@ function createShelves() {
     rightBtn.innerHTML = "→";
     rightBtn.setAttribute("aria-label", "Scroll right");
 
-    // Add initial 5 items
-    const initialItems = getNextItems(category, 5);
-    initialItems.forEach((item) => {
-      const clothingItem = createClothingItem(category, item);
-      scroller.appendChild(clothingItem);
-    });
+    // Add initial window
+    renderWindow(category, scroller);
 
     // Assemble the shelf
     navContainer.appendChild(leftBtn);
@@ -122,7 +140,7 @@ function createShelves() {
   setupInfiniteScroll();
 }
 
-// Function to enable infinite scrolling with navigation buttons
+// Button-controlled navigation over a fixed window; no manual scrolling
 function setupInfiniteScroll() {
   const scrollers = document.querySelectorAll(".media-scroller");
 
@@ -131,50 +149,18 @@ function setupInfiniteScroll() {
     const shelf = scroller.closest(".shelf");
     const leftBtn = shelf.querySelector(".left-btn");
     const rightBtn = shelf.querySelector(".right-btn");
-    let isScrolling = false;
-
-    // Handle left button click
+    // Handle left button click (move backward one, re-render)
     leftBtn.addEventListener("click", () => {
-      const scrollAmount = scroller.clientWidth * 0.8; // Scroll 80% of visible width
-      scroller.scrollBy({
-        left: -scrollAmount,
-        behavior: 'smooth'
-      });
+      const items = clothingData[category];
+      categoryIndices[category] = (categoryIndices[category] - 1 + items.length) % items.length;
+      renderWindow(category, scroller, "backward");
     });
 
-    // Handle right button click
+    // Handle right button click (move forward one, re-render)
     rightBtn.addEventListener("click", () => {
-      const scrollAmount = scroller.clientWidth * 0.8; // Scroll 80% of visible width
-      scroller.scrollBy({
-        left: scrollAmount,
-        behavior: 'smooth'
-      });
-    });
-
-    // Handle scroll event to add more items
-    scroller.addEventListener("scroll", () => {
-      if (isScrolling) return;
-      
-      const scrollLeft = scroller.scrollLeft;
-      const scrollWidth = scroller.scrollWidth;
-      const clientWidth = scroller.clientWidth;
-      
-      // Check if we're near the end (within 200px)
-      if (scrollLeft + clientWidth >= scrollWidth - 200) {
-        isScrolling = true;
-        
-        // Add next item
-        const nextItems = getNextItems(category, 1);
-        nextItems.forEach((item) => {
-          const clothingItem = createClothingItem(category, item);
-          scroller.appendChild(clothingItem);
-        });
-        
-        // Small delay before allowing next append
-        setTimeout(() => {
-          isScrolling = false;
-        }, 100);
-      }
+      const items = clothingData[category];
+      categoryIndices[category] = (categoryIndices[category] + 1) % items.length;
+      renderWindow(category, scroller, "forward");
     });
   });
 }
