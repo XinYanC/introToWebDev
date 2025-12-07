@@ -3,6 +3,18 @@ var rightDoor = document.querySelector(".door-right");
 var closetContainer = document.querySelector(".closet");
 var doorSound = document.getElementById("doorSound");
 var shelvesContainer = document.getElementById("shelves");
+var saveOutfitBtn = document.getElementById("saveOutfitBtn");
+var outfitModal = document.getElementById("outfitModal");
+var closeModalBtn = document.querySelector(".close");
+var confirmSaveBtn = document.getElementById("confirmSaveBtn");
+var outfitDateInput = document.getElementById("outfitDate");
+var outfitPreviewContainer = document.getElementById("outfitPreview");
+
+// Current outfit data
+let currentOutfit = { tops: null, bottoms: null, shoes: null };
+
+// Set today's date as default
+outfitDateInput.valueAsDate = new Date();
 
 // Clothing data organized by category
 const clothingData = {
@@ -127,6 +139,9 @@ function createShelves() {
 
     // Add initial window
     renderWindow(category, scroller);
+    
+    // Initialize outfit data for this category
+    updateCurrentOutfit(category);
 
     // Assemble the shelf
     navContainer.appendChild(leftBtn);
@@ -154,6 +169,7 @@ function setupInfiniteScroll() {
       const items = clothingData[category];
       categoryIndices[category] = (categoryIndices[category] - 1 + items.length) % items.length;
       renderWindow(category, scroller, "backward");
+      updateCurrentOutfit(category);
     });
 
     // Handle right button click (move forward one, re-render)
@@ -161,9 +177,88 @@ function setupInfiniteScroll() {
       const items = clothingData[category];
       categoryIndices[category] = (categoryIndices[category] + 1) % items.length;
       renderWindow(category, scroller, "forward");
+      updateCurrentOutfit(category);
     });
   });
 }
+
+// Update current outfit with the center item from a category
+function updateCurrentOutfit(category) {
+  const items = clothingData[category];
+  const centerIndex = categoryIndices[category];
+  currentOutfit[category] = {
+    index: centerIndex,
+    item: items[centerIndex]
+  };
+  
+  // Enable save button only if all three categories have items
+  if (currentOutfit.tops && currentOutfit.bottoms && currentOutfit.shoes) {
+    saveOutfitBtn.style.display = "block";
+  }
+}
+
+// Open modal for saving outfit
+saveOutfitBtn.addEventListener("click", () => {
+  outfitPreviewContainer.innerHTML = "";
+  
+  // Display outfit preview
+  ["tops", "bottoms", "shoes"].forEach((category) => {
+    const outfitItem = document.createElement("div");
+    outfitItem.className = "outfit-preview-item";
+    
+    const img = document.createElement("img");
+    img.src = `/myCloset/assets/${category}/${currentOutfit[category].item.file}`;
+    img.alt = currentOutfit[category].item.name;
+    
+    outfitItem.appendChild(img);
+    outfitPreviewContainer.appendChild(outfitItem);
+  });
+  
+  outfitModal.classList.add("show");
+});
+
+// Close modal
+closeModalBtn.addEventListener("click", () => {
+  outfitModal.classList.remove("show");
+});
+
+// Close modal when clicking outside
+window.addEventListener("click", (event) => {
+  if (event.target === outfitModal) {
+    outfitModal.classList.remove("show");
+  }
+});
+
+// Save outfit to localStorage
+confirmSaveBtn.addEventListener("click", () => {
+  const date = outfitDateInput.value;
+  
+  if (!date) {
+    alert("Please select a date");
+    return;
+  }
+  
+  // Get existing outfits from localStorage
+  let savedOutfits = JSON.parse(localStorage.getItem("savedOutfits")) || [];
+  
+  // Create outfit object
+  const outfit = {
+    date: date,
+    tops: currentOutfit.tops.item.file,
+    bottoms: currentOutfit.bottoms.item.file,
+    shoes: currentOutfit.shoes.item.file,
+    saved: new Date().toISOString()
+  };
+  
+  // Add to saved outfits
+  savedOutfits.push(outfit);
+  localStorage.setItem("savedOutfits", JSON.stringify(savedOutfits));
+  
+  // Close modal and reset
+  outfitModal.classList.remove("show");
+  alert("Outfit saved successfully!");
+  outfitDateInput.valueAsDate = new Date();
+});
 
 // Door functionality
 leftDoor.addEventListener("click", toggleDoors);
