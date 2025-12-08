@@ -10,26 +10,24 @@
   <body>
     <div class="closet">
       <div class="door door-left">
-        <img src="/myCloset/assets/closet/door.png" alt="Left Door" />
+        <img src="./assets/closet/door.png" alt="Left Door" />
       </div>
       <div class="door door-right">
-        <img src="/myCloset/assets/closet/door.png" alt="Right Door" />
+        <img src="./assets/closet/door.png" alt="Right Door" />
       </div>
 
-      <!-- Shelves that appear when doors open -->
       <div class="shelves" id="shelves"></div>
 
-      <!-- Save Outfit Button -->
       <button id="saveOutfitBtn" class="save-outfit-btn" style="display: none">
         ♥ Save Outfit
       </button>
+
+      <button id="viewOutfitsBtn" class="view-outfits-btn">♥</button>
     </div>
 
-    <!-- Modal for saving outfit -->
     <div id="outfitModal" class="outfit-modal">
       <div class="outfit-modal-content">
         <span class="close">&times;</span>
-        <h2>Save Your Outfit</h2>
         <div class="outfit-preview" id="outfitPreview"></div>
         <div class="outfit-form">
           <label for="outfitDate">Date:</label>
@@ -40,10 +38,7 @@
     </div>
 
     <audio id="doorSound">
-      <source
-        src="/myCloset/assets/closet/door-close-79921.mp3"
-        type="audio/mpeg"
-      />
+      <source src="./assets/closet/door-close-79921.mp3" type="audio/mpeg" />
     </audio>
   </body>
 </html>

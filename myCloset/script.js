@@ -9,14 +9,18 @@ var closeModalBtn = document.querySelector(".close");
 var confirmSaveBtn = document.getElementById("confirmSaveBtn");
 var outfitDateInput = document.getElementById("outfitDate");
 var outfitPreviewContainer = document.getElementById("outfitPreview");
+var viewOutfitsBtn = document.getElementById("viewOutfitsBtn");
 
-// Current outfit data
-let currentOutfit = { tops: null, bottoms: null, shoes: null };
-
-// Set today's date as default
+// Today's date as default for save button
 outfitDateInput.valueAsDate = new Date();
 
-// Clothing data organized by category
+// Keep doors open if coming from saved outfits page
+if (sessionStorage.getItem("doorsOpen") === "true") {
+  closetContainer.classList.add("doors-open");
+  sessionStorage.removeItem("doorsOpen");
+}
+
+// Clothing data
 const clothingData = {
   tops: [
     { name: "Cardigan", file: "cardigan1.PNG" },
@@ -53,10 +57,11 @@ const clothingData = {
   ],
 };
 
-// Track current center index for each category
+// Track current center index and outfits
 const categoryIndices = {};
+let currentOutfit = { tops: null, bottoms: null, shoes: null };
 
-// Function to create a clothing item element
+
 function createClothingItem(category, item, isCenter = false) {
   const clothingItem = document.createElement("div");
   clothingItem.className = "clothing-item";
@@ -66,19 +71,18 @@ function createClothingItem(category, item, isCenter = false) {
   }
 
   const img = document.createElement("img");
-  img.src = `/myCloset/assets/${category}/${item.file}`;
+  img.src = `./assets/${category}/${item.file}`;
   img.alt = item.name;
 
   clothingItem.appendChild(img);
   return clothingItem;
 }
 
-// Render a fixed window of items centered on the current index
 function renderWindow(category, scroller, direction = "none") {
   const items = clothingData[category];
   const total = items.length;
   const centerIndex = categoryIndices[category];
-  const windowSize = 5; // keep odd so there is a center
+  const windowSize = 5;
   const half = Math.floor(windowSize / 2);
 
   scroller.innerHTML = "";
@@ -91,28 +95,25 @@ function renderWindow(category, scroller, direction = "none") {
     scroller.appendChild(clothingItem);
   }
 
-  // Trigger slide animation based on direction
+  // Trigger slide animation from left/right button slide
   if (direction !== "none") {
     const animClass = direction === "forward" ? "slide-left" : "slide-right";
     scroller.classList.remove("slide-left", "slide-right");
-    // force reflow to restart animation
     void scroller.offsetWidth;
     scroller.classList.add(animClass);
   }
 }
 
-// Function to create shelves dynamically
+// Create each shelves
 function createShelves() {
   shelvesContainer.innerHTML = "";
 
   Object.keys(clothingData).forEach((category) => {
-    // Initialize index for this category
     categoryIndices[category] = 0;
     
     const shelf = document.createElement("div");
     shelf.className = "shelf";
 
-    // Create navigation container
     const navContainer = document.createElement("div");
     navContainer.className = "shelf-nav";
 
@@ -122,28 +123,24 @@ function createShelves() {
     leftBtn.innerHTML = "←";
     leftBtn.setAttribute("aria-label", "Scroll left");
 
-    // Scroller container
-    const scroller = document.createElement("div");
-    scroller.className = "media-scroller snaps-inline";
-    scroller.dataset.category = category;
-    
-    // Set z-index based on category
-    const zIndexMap = { tops: 30, bottoms: 20, shoes: 10 };
-    scroller.style.zIndex = zIndexMap[category] || 10;
-
     // Right arrow button
     const rightBtn = document.createElement("button");
     rightBtn.className = "nav-btn right-btn";
     rightBtn.innerHTML = "→";
     rightBtn.setAttribute("aria-label", "Scroll right");
 
-    // Add initial window
+    // horizontal container
+    const scroller = document.createElement("div");
+    scroller.className = "media-scroller snaps-inline";
+    scroller.dataset.category = category;
+
+    const zIndexMap = { tops: 30, bottoms: 20, shoes: 10 };
+    scroller.style.zIndex = zIndexMap[category] || 10;
+
     renderWindow(category, scroller);
     
-    // Initialize outfit data for this category
     updateCurrentOutfit(category);
 
-    // Assemble the shelf
     navContainer.appendChild(leftBtn);
     navContainer.appendChild(scroller);
     navContainer.appendChild(rightBtn);
@@ -151,11 +148,11 @@ function createShelves() {
     shelvesContainer.appendChild(shelf);
   });
 
-  // Add scroll support after shelves are created
+  // Add scroll functionality
   setupInfiniteScroll();
 }
 
-// Button-controlled navigation over a fixed window; no manual scrolling
+// Button-controlled scrolling
 function setupInfiniteScroll() {
   const scrollers = document.querySelectorAll(".media-scroller");
 
@@ -164,7 +161,8 @@ function setupInfiniteScroll() {
     const shelf = scroller.closest(".shelf");
     const leftBtn = shelf.querySelector(".left-btn");
     const rightBtn = shelf.querySelector(".right-btn");
-    // Handle left button click (move backward one, re-render)
+    
+    // Left button click (move backward one, re-render)
     leftBtn.addEventListener("click", () => {
       const items = clothingData[category];
       categoryIndices[category] = (categoryIndices[category] - 1 + items.length) % items.length;
@@ -172,7 +170,7 @@ function setupInfiniteScroll() {
       updateCurrentOutfit(category);
     });
 
-    // Handle right button click (move forward one, re-render)
+    // Right button click (move forward one, re-render)
     rightBtn.addEventListener("click", () => {
       const items = clothingData[category];
       categoryIndices[category] = (categoryIndices[category] + 1) % items.length;
@@ -182,7 +180,7 @@ function setupInfiniteScroll() {
   });
 }
 
-// Update current outfit with the center item from a category
+// Update current outfit based on center items
 function updateCurrentOutfit(category) {
   const items = clothingData[category];
   const centerIndex = categoryIndices[category];
@@ -197,17 +195,16 @@ function updateCurrentOutfit(category) {
   }
 }
 
-// Open modal for saving outfit
+// Open save outfit modal
 saveOutfitBtn.addEventListener("click", () => {
   outfitPreviewContainer.innerHTML = "";
   
-  // Display outfit preview
   ["tops", "bottoms", "shoes"].forEach((category) => {
     const outfitItem = document.createElement("div");
     outfitItem.className = "outfit-preview-item";
     
     const img = document.createElement("img");
-    img.src = `/myCloset/assets/${category}/${currentOutfit[category].item.file}`;
+    img.src = `./assets/${category}/${currentOutfit[category].item.file}`;
     img.alt = currentOutfit[category].item.name;
     
     outfitItem.appendChild(img);
@@ -229,7 +226,7 @@ window.addEventListener("click", (event) => {
   }
 });
 
-// Save outfit to localStorage
+// Save outfit to localStorage: https://www.w3schools.com/html/html5_webstorage.asp
 confirmSaveBtn.addEventListener("click", () => {
   const date = outfitDateInput.value;
   
@@ -238,7 +235,7 @@ confirmSaveBtn.addEventListener("click", () => {
     return;
   }
   
-  // Get existing outfits from localStorage
+  // Get existing outfits from localStorage or else empty
   let savedOutfits = JSON.parse(localStorage.getItem("savedOutfits")) || [];
   
   // Create outfit object
@@ -250,14 +247,19 @@ confirmSaveBtn.addEventListener("click", () => {
     saved: new Date().toISOString()
   };
   
-  // Add to saved outfits
+  // Save outfits
   savedOutfits.push(outfit);
   localStorage.setItem("savedOutfits", JSON.stringify(savedOutfits));
   
   // Close modal and reset
   outfitModal.classList.remove("show");
-  alert("Outfit saved successfully!");
   outfitDateInput.valueAsDate = new Date();
+});
+
+// View saved outfits button
+viewOutfitsBtn.addEventListener("click", () => {
+  const savedOutfitsPage = `${window.location.pathname.replace('index.html', '')}saved-outfits.html`;
+  window.location.href = savedOutfitsPage;
 });
 
 // Door functionality

@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
 body {
   margin: 0;
   padding: 0;
   background: #f0eeea;
   overflow: hidden;
+  font-family: 'Nunito', sans-serif;
 }
 
 .closet {
@@ -69,7 +72,6 @@ body {
     -20px 0 20px rgba(66, 66, 66, 0.5);
 }
 
-/* Shelves - Hidden by default, visible when doors open */
 .shelves {
   position: absolute;
   width: 100%;
@@ -162,22 +164,22 @@ body {
   letter-spacing: 2px;
 }
 
-/* Horizontal Scrolling Media Scroller */
+/* Horizontal Scrolling Shelf */
 .media-scroller {
   display: grid;
   gap: 2.5rem;
   grid-auto-flow: column;
   grid-auto-columns: 17.5%;
   padding: 0 1rem 1rem;
-  overflow: visible; /* allow scaled center item to show fully */
+  overflow: visible; 
   overscroll-behavior-inline: contain;
-  touch-action: none; /* prevent swipe scrolling on touch devices */
+  touch-action: none; 
   width: 100%;
   flex: 1;
   scroll-behavior: smooth;
-  justify-items: center; /* center items horizontally */
-  align-items: center; /* center items vertically */
- }
+  justify-items: center; 
+  align-items: center;
+}
 .snaps-inline {
   scroll-snap-type: x mandatory;
   scroll-padding-inline: calc(50% - 9%);
@@ -196,7 +198,7 @@ body {
   transition: transform 0.3s ease;
   min-width: 150px;
   position: relative;
-  transform: scale(0.6); /* non-center items are much smaller */
+  transform: scale(0.6); 
 }
 
 .clothing-item:hover {
@@ -208,7 +210,6 @@ body {
   z-index: 1;
 }
 
-/* Slide animations on window change */
 .media-scroller.slide-left {
   animation: slide-left 0.25s ease;
 }
@@ -233,41 +234,6 @@ body {
   object-fit: contain;
 }
 
-/* Scrollbar styling */
-.media-scroller::-webkit-scrollbar {
-  height: 6px;
-}
-
-.media-scroller::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.media-scroller::-webkit-scrollbar-thumb {
-  background: #999;
-  border-radius: 3px;
-}
-
-.media-scroller::-webkit-scrollbar-thumb:hover {
-  background: #666;
-}
-
-/* @media (max-width: 1200px) {
-  .media-scroller {
-    grid-auto-columns: 25%;
-  }
-}
-
-@media (max-width: 768px) {
-  .media-scroller {
-    grid-auto-columns: 35%;
-  }
-  
-  .shelf h2 {
-    font-size: 1.25rem;
-  }
-} */
-
-/* Save Outfit Button */
 .save-outfit-btn {
   position: fixed;
   bottom: 30px;
@@ -291,7 +257,6 @@ body {
   box-shadow: 0 6px 16px rgba(255, 105, 180, 0.6);
 }
 
-/* Modal Styles */
 .outfit-modal {
   display: none;
   position: fixed;
@@ -430,4 +395,34 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.view-outfits-btn {
+  position: fixed;
+  top: 20px;
+  right: 150px;
+  background: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+  transition: all 0.3s ease;
+  z-index: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-outfits-btn:hover {
+  background: #ff1493;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(255, 105, 180, 0.6);
+}
+
+.view-outfits-btn:active {
+  transform: scale(0.95);
 }

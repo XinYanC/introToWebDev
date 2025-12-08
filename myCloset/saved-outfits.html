@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Saved Outfits</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="saved-outfits.css" />
+    <script src="saved-outfits.js" defer></script>
+  </head>
+  <body>
+    <div class="saved-outfits-container">
+      <header>
+        <h1>My Saved Outfits</h1>
+        <a
+          href="index.html"
+          class="back-btn"
+          onclick="sessionStorage.setItem('doorsOpen', 'true')"
+          >← Back to Closet</a
+        >
+      </header>
+
+      <main>
+        <div id="outfitsGrid" class="outfits-grid">
+          <!-- Outfits will be populated here -->
+        </div>
+
+        <div id="emptyState" class="empty-state">
+          <p>No saved outfits yet. Start by creating one!</p>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
