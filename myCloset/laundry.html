@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Laundry</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="laundry.css" />
+    <script src="laundry.js" defer></script>
+  </head>
+  <body>
+    <div class="laundry-container">
+      <header>
+        <h1>Laundry</h1>
+        <div class="header-actions">
+          <a
+            href="index.html"
+            class="icon-btn"
+            aria-label="Back to Closet"
+            onclick="sessionStorage.setItem('doorsOpen', 'true')"
+          >
+            <img src="./assets/closet/open-door.png" alt="Closet" />
+          </a>
+          <button
+            id="doLaundryBtn"
+            class="icon-btn laundry-action"
+            aria-label="Do laundry"
+          >
+            <img src="./assets/closet/laundry.png" alt="Laundry" />
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <div id="laundryGrid" class="laundry-grid" aria-live="polite"></div>
+        <div id="emptyState" class="empty-state" aria-live="polite">
+          <p>No worn clothes yet.</p>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

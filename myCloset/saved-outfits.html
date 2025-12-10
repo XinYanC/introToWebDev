@@ -10,13 +10,20 @@
   <body>
     <div class="saved-outfits-container">
       <header>
-        <h1>My Saved Outfits</h1>
-        <a
-          href="index.html"
-          class="back-btn"
-          onclick="sessionStorage.setItem('doorsOpen', 'true')"
-          >← Back to Closet</a
-        >
+        <h1>My Outfits</h1>
+        <div class="header-actions">
+          <a
+            href="index.html"
+            class="icon-btn"
+            aria-label="Back to Closet"
+            onclick="sessionStorage.setItem('doorsOpen', 'true')"
+          >
+            <img src="./assets/closet/open-door.png" alt="Back to Closet" />
+          </a>
+          <a href="laundry.html" class="laundry-link" aria-label="Laundry">
+            <img src="./assets/closet/laundry-service.png" alt="Laundry" />
+          </a>
+        </div>
       </header>
 
       <main>
@@ -25,7 +32,7 @@
         </div>
 
         <div id="emptyState" class="empty-state">
-          <p>No saved outfits yet. Start by creating one!</p>
+          <p>No saved outfits yet.</p>
         </div>
       </main>
     </div>

@@ -57,6 +57,32 @@ const clothingData = {
   ],
 };
 
+// Visible clothing after removing worn items
+let visibleClothingData = {};
+
+function getWornItems() {
+  const wornOutfits = JSON.parse(localStorage.getItem("wornOutfits")) || {};
+  const wornTops = new Set();
+  const wornBottoms = new Set();
+
+  Object.values(wornOutfits).forEach((outfit) => {
+    if (outfit.tops) wornTops.add(outfit.tops);
+    if (outfit.bottoms) wornBottoms.add(outfit.bottoms);
+  });
+
+  return { wornTops, wornBottoms };
+}
+
+function buildVisibleClothing() {
+  const { wornTops, wornBottoms } = getWornItems();
+
+  visibleClothingData = {
+    tops: clothingData.tops.filter((item) => !wornTops.has(item.file)),
+    bottoms: clothingData.bottoms.filter((item) => !wornBottoms.has(item.file)),
+    shoes: clothingData.shoes,
+  };
+}
+
 // Track current center index and outfits
 const categoryIndices = {};
 let currentOutfit = { tops: null, bottoms: null, shoes: null };
@@ -79,13 +105,21 @@ function createClothingItem(category, item, isCenter = false) {
 }
 
 function renderWindow(category, scroller, direction = "none") {
-  const items = clothingData[category];
+  const items = visibleClothingData[category] || [];
   const total = items.length;
   const centerIndex = categoryIndices[category];
   const windowSize = 5;
   const half = Math.floor(windowSize / 2);
 
   scroller.innerHTML = "";
+
+  if (total === 0) {
+    const emptyMsg = document.createElement("div");
+    emptyMsg.className = "empty-shelf";
+    emptyMsg.textContent = "Nothing here (worn)";
+    scroller.appendChild(emptyMsg);
+    return;
+  }
 
   for (let offset = -half; offset <= half; offset++) {
     const itemIndex = (centerIndex + offset + total) % total;
@@ -108,8 +142,11 @@ function renderWindow(category, scroller, direction = "none") {
 function createShelves() {
   shelvesContainer.innerHTML = "";
 
+  buildVisibleClothing();
+
   Object.keys(clothingData).forEach((category) => {
-    categoryIndices[category] = 0;
+    const items = visibleClothingData[category] || [];
+    categoryIndices[category] = items.length ? 0 : -1;
     
     const shelf = document.createElement("div");
     shelf.className = "shelf";
@@ -164,7 +201,8 @@ function setupInfiniteScroll() {
     
     // Left button click (move backward one, re-render)
     leftBtn.addEventListener("click", () => {
-      const items = clothingData[category];
+      const items = visibleClothingData[category] || [];
+      if (!items.length) return;
       categoryIndices[category] = (categoryIndices[category] - 1 + items.length) % items.length;
       renderWindow(category, scroller, "backward");
       updateCurrentOutfit(category);
@@ -172,7 +210,8 @@ function setupInfiniteScroll() {
 
     // Right button click (move forward one, re-render)
     rightBtn.addEventListener("click", () => {
-      const items = clothingData[category];
+      const items = visibleClothingData[category] || [];
+      if (!items.length) return;
       categoryIndices[category] = (categoryIndices[category] + 1) % items.length;
       renderWindow(category, scroller, "forward");
       updateCurrentOutfit(category);
@@ -182,16 +221,23 @@ function setupInfiniteScroll() {
 
 // Update current outfit based on center items
 function updateCurrentOutfit(category) {
-  const items = clothingData[category];
+  const items = visibleClothingData[category] || [];
   const centerIndex = categoryIndices[category];
-  currentOutfit[category] = {
-    index: centerIndex,
-    item: items[centerIndex]
-  };
+
+  if (!items.length || centerIndex < 0) {
+    currentOutfit[category] = null;
+  } else {
+    currentOutfit[category] = {
+      index: centerIndex,
+      item: items[centerIndex],
+    };
+  }
   
   // Enable save button only if all three categories have items
   if (currentOutfit.tops && currentOutfit.bottoms && currentOutfit.shoes) {
     saveOutfitBtn.style.display = "block";
+  } else {
+    saveOutfitBtn.style.display = "none";
   }
 }
 
